@@ -2,7 +2,9 @@
 
 [ext_resource path="res://Block/Block.gd" type="Script" id=1]
 
-[node name="Block" type="ColorRect"]
+[node name="Block" type="Node2D"]
+
+[node name="Color" type="ColorRect" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
 color = Color( 0.952941, 0.0823529, 0.0823529, 1 )
@@ -11,7 +13,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Text" type="Label" parent="."]
+[node name="Text" type="Label" parent="Color"]
 margin_right = 40.0
 margin_bottom = 38.0
 text = "A"
@@ -20,4 +22,4 @@ valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="gui_input" from="." to="." method="_on_Block_gui_input"]
+[connection signal="gui_input" from="Color" to="Color" method="_on_Block_gui_input"]
