@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Block/Block.tscn" type="PackedScene" id=1]
+
+[node name="PentominoF" type="Node2D"]
+
+[node name="Block1" parent="." instance=ExtResource( 1 )]
+margin_left = 41.0
+margin_right = 81.0
+
+[node name="Block2" parent="." instance=ExtResource( 1 )]
+margin_left = -0.35968
+margin_top = 41.2806
+margin_right = 39.6403
+margin_bottom = 81.2806
+
+[node name="Block3" parent="." instance=ExtResource( 1 )]
+margin_left = 41.0071
+margin_top = 41.0
+margin_right = 81.0071
+margin_bottom = 81.0
+
+[node name="Block4" parent="." instance=ExtResource( 1 )]
+margin_left = 41.0
+margin_top = 81.9661
+margin_right = 81.0
+margin_bottom = 121.966
+
+[node name="Block5" parent="." instance=ExtResource( 1 )]
+margin_left = 82.0276
+margin_top = 0.0969391
+margin_right = 122.028
+margin_bottom = 40.0969
