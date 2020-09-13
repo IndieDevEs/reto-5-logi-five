@@ -96,3 +96,76 @@ func _get_groups(stage):
 		if group.find(block.group) == -1:
 			group.push_back(block.group)
 	return group
+
+func _on_Button_pressed():
+	#TODO: Probando carga de Stage
+	var stage = stages[0]
+	stage[5].value = 5
+	stage[6].value = 1
+	stage[7].value = 2
+	stage[8].value = 3
+	stage[9].value = 4
+	stage[10].value = 5
+	_draw_stage(stage)
+	print(_is_valid(stage))
+
+func _draw_stage(stage):
+	for child in get_children():
+		for block in stage:
+			if child.row == block.row and child.column == block.column:
+				child.set_value(str(block.value))
+
+func _is_valid(stage):
+	return _is_valid_rows(stage) and _is_valid_columns(stage) and _is_valid_groups(stage)
+
+func _is_valid_rows(stage):
+	for row in range(1, 5):
+		var values = [1, 2, 3, 4, 5]
+		for block in _get_row(stage, row):
+			if str(block.value) == " ":
+				continue
+			var idx = values.find(block.value)
+			if idx > -1:
+				values.remove(idx)
+			else:
+				return false
+	return true
+
+func _is_valid_columns(stage):
+	for column in range(1, 5):
+		var values = [1, 2, 3, 4, 5]
+		for block in _get_column(stage, column):
+			if str(block.value) == " ":
+				continue
+			var idx = values.find(block.value)
+			if idx > -1:
+				values.remove(idx)
+			else:
+				return false
+	return true
+
+func _is_valid_groups(stage):
+	for group in _get_groups(stage):
+		var values = [1, 2, 3, 4, 5]
+		for block in _get_group(stage, group):
+			if str(block.value) == " ":
+				continue
+			var idx = values.find(block.value)
+			if idx > -1:
+				values.remove(idx)
+			else:
+				return false
+	return true
+
+
+
+
+
+
+
+
+
+
+
+
+

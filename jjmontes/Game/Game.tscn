@@ -32,3 +32,4 @@ margin_top = 4.0
 margin_right = 64.0
 margin_bottom = 24.0
 text = "Verificar"
+[connection signal="pressed" from="Panel/VBoxContainer/Button" to="Panel/VBoxContainer/Stage" method="_on_Button_pressed"]
