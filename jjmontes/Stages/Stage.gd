@@ -89,3 +89,10 @@ func _get_group(stage, name):
 		if block.group == name:
 			group.push_back(block)
 	return group
+
+func _get_groups(stage):
+	var group = []
+	for block in stage:
+		if group.find(block.group) == -1:
+			group.push_back(block.group)
+	return group
