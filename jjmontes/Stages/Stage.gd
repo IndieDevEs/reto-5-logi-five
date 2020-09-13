@@ -45,9 +45,9 @@ var stages = [
 ]
 
 func _ready():
-	_make_stage(0)
+	_render_stage(0)
 
-func _make_stage(stage_index):
+func _render_stage(stage_index):
 	var available_textures = textures.duplicate()
 	var group_textures = {}
 	var stage = stages[stage_index]
