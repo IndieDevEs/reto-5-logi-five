@@ -68,4 +68,24 @@ func _add_block(block, texture):
 	block_instance.group = block.group
 	block_instance.texture = texture
 	add_child(block_instance)
-	pass
+
+func _get_row(stage, number):
+	var row = []
+	for block in stage:
+		if block.row == number:
+			row.push_back(block)
+	return row
+
+func _get_column(stage, number):
+	var col = []
+	for block in stage:
+		if block.column == number:
+			col.push_back(block)
+	return col
+
+func _get_group(stage, name):
+	var group = []
+	for block in stage:
+		if block.group == name:
+			group.push_back(block)
+	return group
