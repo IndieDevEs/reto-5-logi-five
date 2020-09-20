@@ -1,7 +1,9 @@
 extends GridContainer
 
+var _permutations_class = load("res://Scripts/Permutations.gd")
+
 var _random = RandomNumberGenerator.new()
-var last_permutation = -1
+var _permutations = _permutations_class.new()
 var block_scene = preload("res://Block/Block.tscn")
 var textures = [
 	preload("res://Art/acronym8-blue.png"),
@@ -46,12 +48,8 @@ var stages = [
 	]
 ]
 
-var permutations = [
-]
-
 func _ready():
 	_random.randomize()
-	init_permutations()
 	_render_stage(0)
 
 func _render_stage(stage_index):
@@ -106,38 +104,15 @@ func _get_groups(stage):
 
 func _on_Button_pressed():
 	#TODO: Probando carga de Stage
-#	var stage = stages[0]
-#	stage[5].value = 5
-#	stage[6].value = 1
-#	stage[7].value = 2
-#	stage[8].value = 3
-#	stage[9].value = 4
-#	stage[10].value = 5
-#	_draw_stage(stage)
-#	print(_is_valid(stage))
-	pass
-	
-func next_permutation():
-	last_permutation += 1
-	if last_permutation > permutations.size() - 1:
-		last_permutation = 0
-	return permutations[last_permutation]
-	
-func init_permutations():
-	while permutations.size() < 120:
-		var permutation = create_permutation()
-		while (permutations.find(permutation) == -1):
-			permutations.append(permutation)
+	var stage = stages[0]
+	_create_stage(stage)
+	_draw_stage(stage)
 
-func create_permutation():
-	var permutation = []
-	
-	while permutation.size() < 5:
-		var value = _random.randi_range(1, 5)
-		if (permutation.find(value) == -1):
-			permutation.append(value)
-	
-	return permutation
+func _create_stage(stage):
+	for cell in stage:
+		var next = _permutations.next_permutation()
+		for value in next:
+			cell.value = value
 
 var stack = []
 
