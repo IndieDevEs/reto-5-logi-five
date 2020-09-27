@@ -14,8 +14,14 @@ func next_permutation():
 		return null
 	return _permutations[_last_permutation]
 
+func permutation_index():
+	return _last_permutation
+
 func to_first_permutation():
 	_last_permutation = -1
+
+func to_permutation(index):
+	_last_permutation = index
 
 func _init_permutations():
 	while _permutations.size() < 120:
