@@ -105,19 +105,32 @@ func _get_groups(stage):
 func _on_Button_pressed():
 	#TODO: Probando carga de Stage
 	var stage = stages[0]
-	_create_stage(stage)
+	stage = _create_stage(stage)
 	_draw_stage(stage)
 
 func _create_stage(stage):
-	for cell in stage:
-		var next = _permutations.next_permutation()
-		for value in next:
-			cell.value = value
-
-var stack = []
-
-func _set_stack(stage):
-	stack.push_back(stage)
+	var current_row = 1
+	_save_state(stage, true, null)
+	while (_is_complete(stage) == false or _is_valid(stage) == false) and current_row <= 5:
+		var row = _get_row(stage, current_row)
+		var permutation = _permutations.next_permutation()
+		if permutation == null:
+			var discarded = _discard_state()
+			_permutations.to_permutation(discarded.permutation_idx)
+			stage = discarded.state
+			current_row -= 1
+			continue
+		_put_permutation_into(permutation, row)
+		_save_state(stage, _is_valid(stage), _permutations.permutation_index())
+		if _is_valid(stage) == true:
+			_permutations.to_first_permutation()
+			current_row += 1
+		else:
+			var discarded = _discard_state()
+			_permutations.to_permutation(discarded.permutation_idx)
+			stage = discarded.state
+	
+	return stage
 
 func _draw_stage(stage):
 	for child in get_children():
@@ -169,13 +182,55 @@ func _is_valid_groups(stage):
 
 
 
+var state = []
 
+func _discard_state():
+	var last_state = state.pop_back()
+	#_to_csv("user://stage.csv", last_state)
+	if last_state == null:
+		return null
+	return last_state.duplicate(true)
 
+func _save_state(current_state, is_valid_state,permutation_idx):
+	state.push_back({"state": current_state.duplicate(true), "permutation_idx": permutation_idx })
+	_to_csv("user://stage.csv", current_state, is_valid_state)
 
+func _is_complete(stage):
+	for block in stage:
+		if str(block.value) != " ":
+			continue
+		else:
+			return false
+	
+	return true
 
+func _put_permutation_into(permutation, blocks):
+	for idx in range(0, 5):
+		var value = permutation[idx]
+		var block = blocks[idx]
+		block.value = value
 
+func _to_csv_head(file_name, file, content):
+	var array = ["is_valid"]
+	for item in content:
+		array.append(str(item.row) + "-" + str(item.column) + "-" + str(item.group))
+	file.open(file_name, File.WRITE_READ)
+	var pool = PoolStringArray(array)
+	file.store_csv_line(pool)
+	file.close()
 
+func _to_csv(file_name, content, is_valid_state):
+	var file = File.new()
+	if file.file_exists(file_name) != true:
+		_to_csv_head(file_name, file, content)
+	
+	var array = [1 if is_valid_state == true else 0]
+	for item in content:
+		array.append(str(item.value))
 
-
-
+	file.open(file_name, File.READ_WRITE)
+	file.seek_end()
+	var pool = PoolStringArray(array)
+	file.store_csv_line(pool)
+	file.close()
 
