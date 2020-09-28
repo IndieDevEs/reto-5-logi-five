@@ -2,7 +2,6 @@ extends GridContainer
 
 var _permutations_class = load("res://Scripts/Permutations.gd")
 
-var _random = RandomNumberGenerator.new()
 var _permutations = _permutations_class.new()
 var block_scene = preload("res://Block/Block.tscn")
 var textures = [
@@ -49,8 +48,10 @@ var stages = [
 ]
 
 func _ready():
-	_random.randomize()
 	_render_stage(0)
+	var stage = stages[0]
+	stage = _create_stage(stage)
+	_draw_clues(stage)
 
 func _render_stage(stage_index):
 	var available_textures = textures.duplicate()
@@ -103,10 +104,7 @@ func _get_groups(stage):
 	return group
 
 func _on_Button_pressed():
-	#TODO: Probando carga de Stage
-	var stage = stages[0]
-	stage = _create_stage(stage)
-	_draw_stage(stage)
+	pass
 
 func _create_stage(stage):
 	var current_row = 1
@@ -131,6 +129,21 @@ func _create_stage(stage):
 			stage = discarded.state
 	
 	return stage
+
+func _draw_clues(stage):
+	var random = RandomNumberGenerator.new()
+	var groups = _get_groups(stage)
+	var clues = []
+	for group_name in groups:
+		var group = _get_group(stage, group_name)
+		random.randomize()
+		var block_idx = random.randi_range(0, group.size()-1)
+		clues.append(group[block_idx])
+	for child in get_children():
+		for block in clues:
+			if child.row == block.row and child.column == block.column:
+				child.set_value(str(block.value))
+	
 
 func _draw_stage(stage):
 	for child in get_children():
