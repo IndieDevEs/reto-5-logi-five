@@ -143,7 +143,7 @@ func _draw_clues(stage):
 		for block in clues:
 			if child.row == block.row and child.column == block.column:
 				child.set_value(str(block.value))
-	
+				child.readonly()
 
 func _draw_stage(stage):
 	for child in get_children():

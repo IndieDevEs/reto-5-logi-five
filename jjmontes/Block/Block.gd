@@ -5,12 +5,14 @@ var values = [" ", "1", "2", "3", "4", "5"]
 var row
 var column
 var group
+var _readonly = false
 
 func _ready():
 	set_value(" ")
+	editable()
 
 func _on_Block_gui_input(event):
-	if event is InputEventMouseButton and event.pressed == true and event.button_index == BUTTON_LEFT:
+	if event is InputEventMouseButton and event.pressed == true and event.button_index == BUTTON_LEFT and _readonly == false:
 		var pos = values.find(get_value())
 		if (pos == -1):
 			pos = 0
@@ -28,3 +30,11 @@ func set_value(new_value):
 
 func get_value():
 	return $Label.text
+
+func readonly():
+	_readonly = true
+	$Label.add_color_override("font_color", Color(0, 0, 0))
+
+func editable():
+	$Label.add_color_override("font_color", Color(1, 1, 1))
+	_readonly = false
