@@ -6,7 +6,7 @@ var _permutations = _permutations_class.new()
 var block_scene = preload("res://Block/Block.tscn")
 var background_default = Color(0.3,0.3,0.3,1.0)
 var background_error = Color(0.6,0.2,0.2,1.0)
-var background_win = Color(0.2,0.6,0.2,1.0)
+var background_win = Color(0.43,0.68,0.43,1.0)
 var textures = [
 	preload("res://Art/acronym8-blue.png"),
 	preload("res://Art/acronym8-fucshia.png"),
@@ -108,7 +108,8 @@ func _get_groups(stage):
 	return group
 
 func _on_Button_pressed():
-	var stage = stages[0]
+	var stage = stages[0].duplicate()
+	_copy_status_to_stage(stage)
 	if _is_complete(stage) == false or _is_valid(stage) == false:
 		VisualServer.set_default_clear_color(background_error)
 		yield(get_tree().create_timer(0.3), "timeout")
@@ -170,7 +171,7 @@ func _is_valid_rows(stage):
 		for block in _get_row(stage, row):
 			if str(block.value) == " ":
 				continue
-			var idx = values.find(block.value)
+			var idx = values.find(int(block.value))
 			if idx > -1:
 				values.remove(idx)
 			else:
@@ -183,7 +184,7 @@ func _is_valid_columns(stage):
 		for block in _get_column(stage, column):
 			if str(block.value) == " ":
 				continue
-			var idx = values.find(block.value)
+			var idx = values.find(int(block.value))
 			if idx > -1:
 				values.remove(idx)
 			else:
@@ -196,14 +197,18 @@ func _is_valid_groups(stage):
 		for block in _get_group(stage, group):
 			if str(block.value) == " ":
 				continue
-			var idx = values.find(block.value)
+			var idx = values.find(int(block.value))
 			if idx > -1:
 				values.remove(idx)
 			else:
 				return false
 	return true
 
-
+func _copy_status_to_stage(stage):
+	for child in get_children():
+		for block in stage:
+			if child.row == block.row and child.column == block.column:
+				block.value = child.get_value()
 
 var state = []
 
