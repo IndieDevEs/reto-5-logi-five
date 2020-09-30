@@ -5,6 +5,7 @@ var _last_permutation = null
 var _random = RandomNumberGenerator.new()
 
 func _init():
+	_random.randomize()
 	_init_permutations()
 	to_first_permutation()
 
