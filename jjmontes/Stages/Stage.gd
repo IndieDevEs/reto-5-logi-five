@@ -4,6 +4,9 @@ var _permutations_class = load("res://Scripts/Permutations.gd")
 
 var _permutations = _permutations_class.new()
 var block_scene = preload("res://Block/Block.tscn")
+var background_default = Color(0.3,0.3,0.3,1.0)
+var background_error = Color(0.6,0.2,0.2,1.0)
+var background_win = Color(0.2,0.6,0.2,1.0)
 var textures = [
 	preload("res://Art/acronym8-blue.png"),
 	preload("res://Art/acronym8-fucshia.png"),
@@ -48,6 +51,7 @@ var stages = [
 ]
 
 func _ready():
+	VisualServer.set_default_clear_color(background_default)
 	_render_stage(0)
 	var stage = stages[0]
 	stage = _create_stage(stage)
@@ -104,7 +108,13 @@ func _get_groups(stage):
 	return group
 
 func _on_Button_pressed():
-	pass
+	var stage = stages[0]
+	if _is_complete(stage) == false or _is_valid(stage) == false:
+		VisualServer.set_default_clear_color(background_error)
+		yield(get_tree().create_timer(0.3), "timeout")
+		VisualServer.set_default_clear_color(background_default)
+	else:
+		VisualServer.set_default_clear_color(background_win)
 
 func _create_stage(stage):
 	var current_row = 1
