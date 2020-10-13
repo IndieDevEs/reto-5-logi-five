@@ -6,3 +6,5 @@ Envía Pull Request a este repositorio, agrega tu juego en una carpeta nueva con
 # Lista de juegos:
 
 - [jjmontes](https://github.com/IndieDevEs/reto-5-logi-five/tree/master/jjmontes)
+- [DeybisMelendez](https://github.com/DeybisMelendez/logi-5)
+- [Juanyang](https://juanyang.itch.io/logi5)
